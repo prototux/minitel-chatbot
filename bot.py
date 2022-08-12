@@ -7,6 +7,7 @@ from minitel import minitel
 class bot:
     def __init__(self, name, service, device):
         self.botname = name
+        self.name = 'me'
 
         # Init minitel and cakechat
         self.minitel = minitel(device)
@@ -25,9 +26,23 @@ class bot:
         # Define built-in commands
         self.cmds = {
             'mood': self.cmd_mood,
+            'nick': self.cmd_nick,
+            'botname': self.cmd_botname,
             'reset': self.cmd_reset,
             'quit': self.cmd_quit
         }
+
+    def cmd_nick(self, params):
+        if not params:
+            return
+
+        self.name = ' '.join(params)
+
+    def cmd_botname(self, params):
+        if not params:
+            return
+
+        self.botname = ' '.join(params)
 
     def cmd_mood(self, params):
         if not params:
@@ -67,7 +82,7 @@ class bot:
     def run(self):
         # Main loop
         while True:
-            str = self.minitel.readline('me')
+            str = self.minitel.readline(self.name)
 
             # Strings starting with # are commands
             if str[0] == '#':
